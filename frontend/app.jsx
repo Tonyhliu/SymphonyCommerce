@@ -18,6 +18,7 @@ class App extends React.Component {
     this._productChange = this._productChange.bind(this);
     this._filter = this._filter.bind(this);
     this._sortRowsBy = this._sortRowsBy.bind(this);
+    this._reset = this._reset.bind(this);
   }
 
   componentDidMount() {
@@ -36,12 +37,18 @@ class App extends React.Component {
   _filter() {
     let filtered = [];
     this.state.products.forEach(product => {
-      if (product.defaultPriceInCents > 2000) {
+      if (product.defaultPriceInCents > 2500) {
         filtered.push(product);
       }
     });
 
     this.setState({ products: filtered });
+  }
+
+  _reset() {
+    this.setState({ products: ProductStore.all(),
+                    sortBy: null,
+                    sortDir: null });
   }
 
   _sortRowsBy(arg) {
@@ -86,29 +93,32 @@ class App extends React.Component {
     }
 
     return(
-      <div>
+      <div className='main-container'>
         <div>
           <Button className='filter'
-            onClick={this._filter}>Hide if less than $20</Button>
+            onClick={this._filter}>$25 or more</Button>
           <Button className='reset'
-            onClick={this._productChange}>Reset</Button>
+            onClick={this._reset}>Reset</Button>
         </div>
-        <Table>
-          <thead>
-            <tr>
-              <th className='sort-by-row'>
+        <Table responsive
+                striped
+                bordered
+                hover>
+          <thead className='table-head'>
+            <tr className='table-row'>
+              <th className='table-header'>
                   Product Picture
               </th>
               <th onClick={this._sortRowsBy.bind(this, 'name')}
-                  className='sort-by-row'>
+                  className='table-header sort-by-row'>
                   Product Name {this.state.sortBy === 'name' ? sortDirectionArrow : ''}
               </th>
               <th onClick={this._sortRowsBy.bind(this, 'defaultPriceInCents')}
-                  className='sort-by-row'>
+                  className='table-header sort-by-row'>
                   Price of Product in Dollars {this.state.sortBy === 'defaultPriceInCents' ? sortDirectionArrow : ''}
               </th>
               <th onClick={this._sortRowsBy.bind(this, 'createdAt')}
-                  className='sort-by-row'>
+                  className='table-header sort-by-row'>
                   Created at {this.state.sortBy === 'createdAt' ? sortDirectionArrow : ''}
               </th>
             </tr>
@@ -117,10 +127,11 @@ class App extends React.Component {
             {this.state.products.map(product => {
               const imgLink = 'http://' + product.mainImage.ref;
               return (<tr key={product.id}>
-                <td><img src={imgLink}></img></td>
-                <td>{product.name}</td>
-                <td>${product.defaultPriceInCents / 100}</td>
-                <td>{product.createdAt}</td>
+                <td className='table-data'><img src={imgLink}
+                        className='product-image'></img></td>
+                <td className='table-data'>{product.name}</td>
+                <td className='table-data'>${product.defaultPriceInCents / 100}</td>
+                <td className='table-data'>{product.createdAt}</td>
               </tr>);
             })}
           </tbody>

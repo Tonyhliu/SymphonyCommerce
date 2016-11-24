@@ -1,0 +1,23 @@
+.main-container {
+  margin: 0 10%;
+  font-family: 'Roboto', sans-serif;
+}
+
+.table-header {
+  padding: 10px;
+}
+
+.table-data {
+  width: 20%;
+  text-align: center;
+}
+
+.sort-by-row:hover {
+  cursor: pointer;
+  transform: scale(1.25);
+}
+
+.product-image {
+  height: 200px;
+  align-self: center;
+}
