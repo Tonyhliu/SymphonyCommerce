@@ -2,19 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ProductActions from './actions/product_actions';
 import ProductStore from './store/product_store';
-import ProductItem from './components/product_item';
 import { Button, Table } from 'react-bootstrap';
+// import ProductItem from './components/product_item';
 
 class App extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      products: []
+      products: [],
+      sortBy: null,
+      sortDir: null
     };
 
     this._productChange = this._productChange.bind(this);
     this._filter = this._filter.bind(this);
+    this._sortRowsBy = this._sortRowsBy.bind(this);
   }
 
   componentDidMount() {
@@ -41,8 +44,47 @@ class App extends React.Component {
     this.setState({ products: filtered });
   }
 
+  _sortRowsBy(arg) {
+    let sortDir = this.state.sortDir,
+        sortBy = this.state.sortBy,
+        prods = this.state.products.slice();
+
+    if (sortDir !== null) {
+      sortDir = this.state.sortDir === 'ASC' ? 'DESC' : 'ASC';
+    } else {
+      sortDir = 'DESC';
+    }
+
+    if (arg !== sortBy) {
+      sortDir = 'ASC';
+    }
+
+    prods.sort((a, b) => {
+      let sortVal = 0;
+      if (a[arg] > b[arg]) {
+        sortVal = 1;
+      }
+      if (a[arg] < b[arg]) {
+        sortVal = -1;
+      }
+
+      if (sortDir === 'DESC') {
+        sortVal = sortVal * -1;
+      }
+
+      return sortVal;
+    });
+
+    this.setState({ products: prods, sortDir: sortDir, sortBy: arg });
+  }
+
 
   render() {
+    let sortDirectionArrow = '';
+    if (this.state.sortDir !== null) {
+      sortDirectionArrow = this.state.sortDir === 'DESC' ? ' ↓' : ' ↑';
+    }
+
     return(
       <div>
         <div>
@@ -54,10 +96,21 @@ class App extends React.Component {
         <Table>
           <thead>
             <tr>
-              <th>Product Picture</th>
-              <th>Product Name</th>
-              <th>Price of Product in Dollars</th>
-              <th>Created at</th>
+              <th className='sort-by-row'>
+                  Product Picture
+              </th>
+              <th onClick={this._sortRowsBy.bind(this, 'name')}
+                  className='sort-by-row'>
+                  Product Name {this.state.sortBy === 'name' ? sortDirectionArrow : ''}
+              </th>
+              <th onClick={this._sortRowsBy.bind(this, 'defaultPriceInCents')}
+                  className='sort-by-row'>
+                  Price of Product in Dollars {this.state.sortBy === 'defaultPriceInCents' ? sortDirectionArrow : ''}
+              </th>
+              <th onClick={this._sortRowsBy.bind(this, 'createdAt')}
+                  className='sort-by-row'>
+                  Created at {this.state.sortBy === 'createdAt' ? sortDirectionArrow : ''}
+              </th>
             </tr>
           </thead>
           <tbody>
