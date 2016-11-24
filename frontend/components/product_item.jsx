@@ -1,25 +1,36 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-class ProductItem extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const imgLink = 'http://' + this.props.product.mainImage.ref;
-    let dollars = this.props.product.defaultPriceInCents / 100;
-    return (
-      <li>
-        <div>Name: {this.props.product.name}</div>
-        <div>id: {this.props.product.id}</div>
-        <div>Default price Dollars: ${dollars}</div>
-        <div>Default Price in Cents: {this.props.product.defaultPriceInCents}</div>
-        <div>MSRP in Cents: {this.props.product.msrpInCents}</div>
-        <img src={imgLink}></img>
-      </li>
-    );
-  }
-}
-
-export default ProductItem;
+// import React from 'react';
+// import ReactDOM from 'react-dom';
+// import { Table } from 'react-bootstrap';
+//
+// class ProductItem extends React.Component {
+//   constructor(props) {
+//     super(props);
+//   }
+//
+//   render() {
+//     const imgLink = 'http://' + this.props.product.mainImage.ref;
+//     let dollars = this.props.product.defaultPriceInCents / 100;
+//     return (
+//       <div>
+//         <Table>
+//           <thead>
+//             <tr>
+//               <th>Product Picture</th>
+//               <th>Product Name</th>
+//               <th>Price of Product in Dollars</th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             <tr>
+//               <td><img src={imgLink}></img></td>
+//               <td>{this.props.product.name}</td>
+//               <td>{dollars}</td>
+//             </tr>
+//           </tbody>
+//         </Table>
+//       </div>
+//     );
+//   }
+// }
+//
+// export default ProductItem;
