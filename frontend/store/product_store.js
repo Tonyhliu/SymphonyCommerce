@@ -1,5 +1,5 @@
 import AppDispatcher from '../dispatcher/dispatcher';
-const Store = require('flux/utils').Store;
+import { Store } from 'flux/utils';
 const ProductStore = new Store(AppDispatcher);
 
 let _products = {};

@@ -5,8 +5,8 @@ const ProductApiUtil = {
       type: 'GET',
       dataType: "json",
       success (resp) {
-        // console.log(resp);
-        // window.resp = resp;
+        console.log(resp);
+        window.resp = resp;
         cb(resp.products);
       }
     });
