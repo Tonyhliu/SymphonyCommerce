@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import ProductActions from './actions/product_actions';
 import ProductStore from './store/product_store';
 import { Button, Table } from 'react-bootstrap';
-// import ProductItem from './components/product_item';
 
 class App extends React.Component {
   constructor() {
@@ -94,11 +93,16 @@ class App extends React.Component {
 
     return(
       <div className='main-container'>
-        <div>
+        <div className='buttons'>
           <Button className='filter'
-            onClick={this._filter}>$25 or more</Button>
+            onClick={this._filter}>
+            $25 or more
+          </Button>
+          <div className='divider'></div>
           <Button className='reset'
-            onClick={this._reset}>Reset</Button>
+            onClick={this._reset}>
+            Reset
+          </Button>
         </div>
         <Table responsive
                 striped

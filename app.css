@@ -3,6 +3,32 @@
   font-family: 'Roboto', sans-serif;
 }
 
+.buttons {
+  text-align: center;
+  margin: 3% 0;
+}
+
+.filter, .reset {
+  background-color: #4267b2;
+  border: none;
+  color: white;
+  padding: 8px 18px;
+  text-align: center;
+  display: inline-block;
+  font-size: 12px;
+  border-radius: 2px;
+}
+
+.divider {
+  width: 2em;
+  height: auto;
+  display: inline-block;
+}
+
+.filter:hover, .reset:hover {
+  cursor: pointer;
+}
+
 .table-header {
   padding: 10px;
 }
