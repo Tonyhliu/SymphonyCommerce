@@ -1,25 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ProductStore from '../store/product_store';
+import ProductActions from '../actions/product_actions';
 import { Table } from 'react-bootstrap';
 
 class Data extends React.Component {
   constructor(props) {
     super(props);
 
-    // console.log(this.props);
     this.state = {
-      products: this.props.products,
+      products: [],
       sortBy: null,
-      sortDir: null
+      sortDir: null,
+      cart: 0
     };
 
     this._sortRowsBy = this._sortRowsBy.bind(this);
     this._reset = this._reset.bind(this);
+    this._productChange = this._productChange.bind(this);
+    // this._addToCart = this._addToCart.bind(this);
   }
 
   componentDidMount() {
+    this.productListener = ProductStore.addListener(this._productChange);
+    ProductActions.fetchAllProducts();
+  }
 
+  _productChange() {
+    this.setState({ products: ProductStore.all() });
   }
 
   _reset() {
@@ -73,37 +81,46 @@ class Data extends React.Component {
 
     return (
       <Table responsive
-              striped
-              bordered
-              hover>
+        striped
+        bordered
+        hover>
         <thead className='table-head'>
           <tr className='table-row'>
             <th className='table-header'>
-                Product Picture
+              Product Picture
             </th>
             <th onClick={this._sortRowsBy.bind(this, 'name')}
-                className='table-header sort-by-row'>
-                Product Name {this.state.sortBy === 'name' ? sortDirectionArrow : ''}
+              className='table-header sort-by-row'>
+              Product Name {this.state.sortBy === 'name' ? sortDirectionArrow : ''}
             </th>
             <th onClick={this._sortRowsBy.bind(this, 'defaultPriceInCents')}
-                className='table-header sort-by-row'>
-                Price of Product in Dollars {this.state.sortBy === 'defaultPriceInCents' ? sortDirectionArrow : ''}
+              className='table-header sort-by-row'>
+              Price of Product in Dollars {this.state.sortBy === 'defaultPriceInCents' ? sortDirectionArrow : ''}
             </th>
             <th onClick={this._sortRowsBy.bind(this, 'createdAt')}
-                className='table-header sort-by-row'>
-                Created at {this.state.sortBy === 'createdAt' ? sortDirectionArrow : ''}
+              className='table-header sort-by-row'>
+              Created at {this.state.sortBy === 'createdAt' ? sortDirectionArrow : ''}
             </th>
           </tr>
         </thead>
         <tbody>
           {this.state.products.map(product => {
             const imgLink = 'http://' + product.mainImage.ref;
+            let productPrice;
+
+            if (this.state.wholesale) {
+              productPrice = ((product.defaultPriceInCents / 100) - (product.defaultPriceInCents / 100) * .2).toFixed(2);
+            } else {
+              productPrice = (product.defaultPriceInCents / 100).toFixed(2);
+            }
             return (<tr key={product.id}>
               <td className='table-data'><img src={imgLink}
-                      className='product-image'></img></td>
-              <td className='table-data'>{product.name}</td>
-              <td className='table-data'>${product.defaultPriceInCents / 100}</td>
+                className='product-image'></img></td>
+              <td className='product-name table-data'>{product.name}</td>
+              <td className='product-price table-data'>${productPrice}</td>
               <td className='table-data'>{product.createdAt}</td>
+              <td className='table-data'
+                onClick={this.props.addToCart}>Add to Cart</td>
             </tr>);
           })}
         </tbody>
