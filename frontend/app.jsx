@@ -11,13 +11,17 @@ class App extends React.Component {
     this.state = {
       products: [],
       sortBy: null,
-      sortDir: null
+      sortDir: null,
+      wholesale: false,
+      cart: 0
     };
 
     this._productChange = this._productChange.bind(this);
     this._filter = this._filter.bind(this);
     this._sortRowsBy = this._sortRowsBy.bind(this);
     this._reset = this._reset.bind(this);
+    this._wholesaleClicked = this._wholesaleClicked.bind(this);
+    this._addToCart = this._addToCart.bind(this);
   }
 
   componentDidMount() {
@@ -84,6 +88,20 @@ class App extends React.Component {
     this.setState({ products: prods, sortDir: sortDir, sortBy: arg });
   }
 
+  _wholesaleClicked() {
+    this.setState({ wholesale: !this.state.wholesale });
+  }
+
+  _addToCart(e) {
+    let productName = $(e.currentTarget.parentNode).children('.product-name')[0].innerHTML,
+        productPrice = $(e.currentTarget.parentNode).children('.product-price')[0].innerText,
+        length;
+    $('.cart').append(`<span> ${productName} </span>`);
+    $('.cart').append(`<span> ${productPrice} </span>`);
+
+    length = ($('.cart').children().length / 2);
+    this.setState({ cart: length });
+  }
 
   render() {
     let sortDirectionArrow = '';
@@ -103,6 +121,13 @@ class App extends React.Component {
             onClick={this._reset}>
             Reset
           </Button>
+          <label className='wholesale-checkbox'>
+            <input type='checkbox'
+                  onClick={this._wholesaleClicked}/>Wholesale
+          </label>
+          <div className='cart'>
+            CART {this.state.cart}
+          </div>
         </div>
         <Table responsive
                 striped
@@ -130,12 +155,21 @@ class App extends React.Component {
           <tbody>
             {this.state.products.map(product => {
               const imgLink = 'http://' + product.mainImage.ref;
+              let productPrice;
+
+              if (this.state.wholesale) {
+                productPrice = ((product.defaultPriceInCents / 100) - (product.defaultPriceInCents / 100) * .2).toFixed(2);
+              } else {
+                productPrice = (product.defaultPriceInCents / 100).toFixed(2);
+              }
               return (<tr key={product.id}>
                 <td className='table-data'><img src={imgLink}
                         className='product-image'></img></td>
-                <td className='table-data'>{product.name}</td>
-                <td className='table-data'>${product.defaultPriceInCents / 100}</td>
+                <td className='product-name table-data'>{product.name}</td>
+                <td className='product-price table-data'>${productPrice}</td>
                 <td className='table-data'>{product.createdAt}</td>
+                <td className='table-data'
+                    onClick={this._addToCart}>Add to Cart</td>
               </tr>);
             })}
           </tbody>

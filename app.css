@@ -47,3 +47,10 @@
   height: 200px;
   align-self: center;
 }
+
+.cart {
+  display: flex;
+  flex-direction: column;
+  height: 20%;
+  border: 1px solid orange;
+}
