@@ -6,7 +6,7 @@ Challenge was build in React using the Flux architecture. Although Flux wasn't n
 ## Instructions to Run
 ======
 
-To install, clone Repository, run 'npm install'. Lastly, run 'webpack --w' and open up index.html.
+To install, clone Repository, run 'npm install'. Open up index.html.
 
 
 ## Features
