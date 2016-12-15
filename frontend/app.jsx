@@ -18,14 +18,13 @@ class App extends React.Component {
     };
 
     this._productChange = this._productChange.bind(this);
-    this._filter = this._filter.bind(this);
-    this._sortRowsBy = this._sortRowsBy.bind(this);
     this._reset = this._reset.bind(this);
-    this._wholesaleClicked = this._wholesaleClicked.bind(this);
+    this._filter = this._filter.bind(this);
     this._addToCart = this._addToCart.bind(this);
+    this._wholesaleClicked = this._wholesaleClicked.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.productListener = ProductStore.addListener(this._productChange);
     ProductActions.fetchAllProducts();
   }
@@ -50,43 +49,10 @@ class App extends React.Component {
   }
 
   _reset() {
-    this.setState({ products: ProductStore.all(),
+    this.setState({ cart: 0,
                     sortBy: null,
-                    sortDir: null });
-  }
-
-  _sortRowsBy(arg) {
-    let sortDir = this.state.sortDir,
-        sortBy = this.state.sortBy,
-        prods = this.state.products.slice();
-
-    if (sortDir !== null) {
-      sortDir = this.state.sortDir === 'ASC' ? 'DESC' : 'ASC';
-    } else {
-      sortDir = 'DESC';
-    }
-
-    if (arg !== sortBy) {
-      sortDir = 'ASC';
-    }
-
-    prods.sort((a, b) => {
-      let sortVal = 0;
-      if (a[arg] > b[arg]) {
-        sortVal = 1;
-      }
-      if (a[arg] < b[arg]) {
-        sortVal = -1;
-      }
-
-      if (sortDir === 'DESC') {
-        sortVal = sortVal * -1;
-      }
-
-      return sortVal;
-    });
-
-    this.setState({ products: prods, sortDir: sortDir, sortBy: arg });
+                    sortDir: null,
+                    products: ProductStore.all() });
   }
 
   _wholesaleClicked() {
@@ -105,11 +71,6 @@ class App extends React.Component {
   }
 
   render() {
-    let sortDirectionArrow = '';
-    if (this.state.sortDir !== null) {
-      sortDirectionArrow = this.state.sortDir === 'DESC' ? ' ↓' : ' ↑';
-    }
-
     return(
       <div className='main-container'>
         <div className='buttons'>
@@ -130,8 +91,9 @@ class App extends React.Component {
             CART {this.state.cart}
           </div>
         </div>
-        <Data products={this.state.products}
-              addToCart={this._addToCart} />
+        <Data parentState={this.state}
+              addToCart={this._addToCart}
+              wholesaleClicked={this.state.wholesale} />
       </div>
     );
   }

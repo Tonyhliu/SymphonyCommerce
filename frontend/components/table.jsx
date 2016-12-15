@@ -10,30 +10,17 @@ class Data extends React.Component {
 
     this.state = {
       products: [],
-      sortBy: null,
-      sortDir: null,
-      cart: 0
+      sortBy: this.props.parentState.sortBy,
+      sortDir: this.props.parentState.sortDir,
     };
 
     this._sortRowsBy = this._sortRowsBy.bind(this);
-    this._reset = this._reset.bind(this);
-    this._productChange = this._productChange.bind(this);
-    // this._addToCart = this._addToCart.bind(this);
   }
 
-  componentDidMount() {
-    this.productListener = ProductStore.addListener(this._productChange);
-    ProductActions.fetchAllProducts();
-  }
-
-  _productChange() {
-    this.setState({ products: ProductStore.all() });
-  }
-
-  _reset() {
-    this.setState({ products: ProductStore.all(),
-                    sortDir: null,
-                    sortBy: null });
+  componentWillReceiveProps(nextProps) {
+    this.setState({ products : nextProps.parentState.products,
+                    sortBy : nextProps.parentState.sortBy,
+                    sortDir : nextProps.parentState.sortDir });
   }
 
   _sortRowsBy(arg) {
@@ -75,6 +62,7 @@ class Data extends React.Component {
 
   render() {
     let sortDirectionArrow = '';
+    console.log(this.state.sortDir);
     if (this.state.sortDir !== null) {
       sortDirectionArrow = this.state.sortDir === 'DESC' ? ' ↓' : ' ↑';
     }
@@ -108,7 +96,7 @@ class Data extends React.Component {
             const imgLink = 'http://' + product.mainImage.ref;
             let productPrice;
 
-            if (this.state.wholesale) {
+            if (this.props.wholesaleClicked) {
               productPrice = ((product.defaultPriceInCents / 100) - (product.defaultPriceInCents / 100) * .2).toFixed(2);
             } else {
               productPrice = (product.defaultPriceInCents / 100).toFixed(2);
