@@ -62,7 +62,7 @@ class Data extends React.Component {
 
   render() {
     let sortDirectionArrow = '';
-    console.log(this.state.sortDir);
+    // console.log(this.state.sortDir);
     if (this.state.sortDir !== null) {
       sortDirectionArrow = this.state.sortDir === 'DESC' ? ' ↓' : ' ↑';
     }
