@@ -137,52 +137,6 @@ class App extends React.Component {
   }
 }
 
-// <Table responsive
-//   striped
-//   bordered
-//   hover>
-//   <thead className='table-head'>
-//     <tr className='table-row'>
-//       <th className='table-header'>
-//         Product Picture
-//       </th>
-//       <th onClick={this._sortRowsBy.bind(this, 'name')}
-//         className='table-header sort-by-row'>
-//         Product Name {this.state.sortBy === 'name' ? sortDirectionArrow : ''}
-//       </th>
-//       <th onClick={this._sortRowsBy.bind(this, 'defaultPriceInCents')}
-//         className='table-header sort-by-row'>
-//         Price of Product in Dollars {this.state.sortBy === 'defaultPriceInCents' ? sortDirectionArrow : ''}
-//       </th>
-//       <th onClick={this._sortRowsBy.bind(this, 'createdAt')}
-//         className='table-header sort-by-row'>
-//         Created at {this.state.sortBy === 'createdAt' ? sortDirectionArrow : ''}
-//       </th>
-//     </tr>
-//   </thead>
-//   <tbody>
-//     {this.state.products.map(product => {
-//       const imgLink = 'http://' + product.mainImage.ref;
-//       let productPrice;
-//
-//       if (this.state.wholesale) {
-//         productPrice = ((product.defaultPriceInCents / 100) - (product.defaultPriceInCents / 100) * .2).toFixed(2);
-//       } else {
-//         productPrice = (product.defaultPriceInCents / 100).toFixed(2);
-//       }
-//       return (<tr key={product.id}>
-//         <td className='table-data'><img src={imgLink}
-//           className='product-image'></img></td>
-//         <td className='product-name table-data'>{product.name}</td>
-//         <td className='product-price table-data'>${productPrice}</td>
-//         <td className='table-data'>{product.createdAt}</td>
-//         <td className='table-data'
-//           onClick={this._addToCart}>Add to Cart</td>
-//       </tr>);
-//     })}
-//   </tbody>
-// </Table>
-
 export default App;
 
 document.addEventListener('DOMContentLoaded', function() {
